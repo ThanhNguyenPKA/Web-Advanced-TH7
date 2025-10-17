@@ -106,18 +106,24 @@ Route::post('searchpoly','MotelController@SearchpolyAjax');
 //Route::post('guibinhluan','UserController@post_binhluan');
 Route::get('/guibinhluan', 'UserController@guibinhluan');
 
+Ruse Illuminate\Support\Facades\Route;
+use App\Http\Controllers\apiUserController;
+use App\Http\Controllers\apiController;
+
+
 Route::get('/userGetJson', [apiUserController::class, 'userGetJson']);
 Route::post('/jsonInputPost', [apiUserController::class, 'jsonInputPost']);
 
 
-Route::get('/users', [ApiController::class, 'getUsers']);
-Route::get('/users/{id}', [ApiController::class, 'getUserById']);
-Route::post('/users', [ApiController::class, 'createUser']);
-Route::put('/users/{id}', [ApiController::class, 'updateUser']);
-Route::delete('/users/{id}', [ApiController::class, 'deleteUser']);
+Route::get('/users', [apiController::class, 'getUsers']);
+Route::get('/users/{id}', [apiController::class, 'getUserById']);
+Route::post('/users', [apiController::class, 'createUser']);
+Route::put('/users/{id}', [apiController::class, 'updateUser']);
+Route::delete('/users/{id}', [apiController::class, 'deleteUser']);
 
-Route::get('/motels', [ApiController::class, 'getMotels']);
-Route::get('/motels/{id}', [ApiController::class, 'getMotelById']);
-Route::post('/motels', [ApiController::class, 'createMotel']);
-Route::put('/motels/{id}', [ApiController::class, 'updateMotel']);
-Route::delete('/motels/{id}', [ApiController::class, 'deleteMotel']);
+
+Route::get('/motels', [apiController::class, 'getMotels']);
+Route::get('/motels/{id}', [apiController::class, 'getMotelById']);
+Route::post('/motels', [apiController::class, 'createMotel']);
+Route::put('/motels/{id}', [apiController::class, 'updateMotel']);
+Route::delete('/motels/{id}', [apiController::class, 'deleteMotel']);

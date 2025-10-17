@@ -1,0 +1,109 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Models\User;
+use App\Models\Motel;
+
+class ApiController extends Controller
+{
+    public function getUsers()
+    {
+        $users = User::all();
+        return response()->json($users);
+    }
+
+    public function getUserById($id)
+    {
+        $user = User::find($id);
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+        return response()->json($user);
+    }
+
+    public function createUser(Request $request)
+    {
+        $validated = $request->validate([
+            'name'     => 'required|string|max:255',
+            'email'    => 'required|email|unique:users,email',
+            'password' => 'required|string|min:6'
+        ]);
+
+        $user = User::create([
+            'name'     => $validated['name'],
+            'email'    => $validated['email'],
+            'password' => bcrypt($validated['password'])
+        ]);
+
+        return response()->json($user, 201);
+    }
+
+    public function updateUser(Request $request, $id)
+    {
+        $user = User::find($id);
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+        $user->update($request->only(['name', 'email']));
+        return response()->json($user);
+    }
+
+    public function deleteUser($id)
+    {
+        $user = User::find($id);
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+        $user->delete();
+        return response()->json(['message' => 'User deleted successfully']);
+    }
+
+    public function getMotels()
+    {
+        $motels = Motel::all();
+        return response()->json($motels);
+    }
+
+    public function getMotelById($id)
+    {
+        $motel = Motel::find($id);
+        if (!$motel) {
+            return response()->json(['message' => 'Motel not found'], 404);
+        }
+        return response()->json($motel);
+    }
+
+    public function createMotel(Request $request)
+    {
+        $validated = $request->validate([
+            'name'    => 'required|string|max:255',
+            'address' => 'required|string|max:255',
+            'price'   => 'required|numeric'
+        ]);
+
+        $motel = Motel::create($validated);
+        return response()->json($motel, 201);
+    }
+
+    public function updateMotel(Request $request, $id)
+    {
+        $motel = Motel::find($id);
+        if (!$motel) {
+            return response()->json(['message' => 'Motel not found'], 404);
+        }
+        $motel->update($request->all());
+        return response()->json($motel);
+    }
+
+    public function deleteMotel($id)
+    {
+        $motel = Motel::find($id);
+        if (!$motel) {
+            return response()->json(['message' => 'Motel not found'], 404);
+        }
+        $motel->delete();
+        return response()->json(['message' => 'Motel deleted successfully']);
+    }
+}
